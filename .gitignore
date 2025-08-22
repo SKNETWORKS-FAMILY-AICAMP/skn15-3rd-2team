@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.pt
+*.pth
+env/
+.venv/
+.vscode/
+.ipynb_checkpoints/
+data/
+.env
+.chainlit/
