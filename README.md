@@ -4,50 +4,50 @@
 <table>
   <tr>
     <td align="center" width="150" style="padding:6px 8px;">
-      <a href="https://github.com/juyeonkwon" style="text-decoration:none; color:inherit;">
+      <a href="https://github.com/juyeonkwon" style="text-decoration:none;">
         <img src="https://github.com/juyeonkwon.png" width="80" style="border-radius:50%;" alt="권주연 아바타"/><br/>
-        <div style="font-size:18px; font-weight:700; line-height:1.25; margin-top:6px;">권주연 [팀장]</div>
       </a>
+      <div style="font-size:18px; font-weight:800; line-height:1.25; margin-top:6px;">권주연 [팀장]</div>
       <div style="font-size:13px; margin-top:4px;"><code>[@juyeonkwon]</code></div>
       <div style="font-size:12px; line-height:1.2;"><a href="https://github.com/juyeonkwon">[GitHub 주소]</a></div>
     </td>
     <td align="center" width="150" style="padding:6px 8px;">
-      <a href="https://github.com/solchna" style="text-decoration:none; color:inherit;">
+      <a href="https://github.com/solchna" style="text-decoration:none;">
         <img src="https://github.com/solchna.png" width="80" style="border-radius:50%;" alt="조솔찬 아바타"/><br/>
-        <div style="font-size:18px; font-weight:700; line-height:1.25; margin-top:6px;">조솔찬</div>
       </a>
+      <div style="font-size:18px; font-weight:800; line-height:1.25; margin-top:6px;">조솔찬</div>
       <div style="font-size:13px; margin-top:4px;"><code>[@solchna]</code></div>
       <div style="font-size:12px; line-height:1.2;"><a href="https://github.com/solchna">[GitHub 주소]</a></div>
     </td>
     <td align="center" width="150" style="padding:6px 8px;">
-      <a href="https://github.com/asdg441" style="text-decoration:none; color:inherit;">
+      <a href="https://github.com/asdg441" style="text-decoration:none;">
         <img src="https://github.com/asdg441.png" width="80" style="border-radius:50%;" alt="노건우 아바타"/><br/>
-        <div style="font-size:18px; font-weight:700; line-height:1.25; margin-top:6px;">노건우</div>
       </a>
+      <div style="font-size:18px; font-weight:800; line-height:1.25; margin-top:6px;">노건우</div>
       <div style="font-size:13px; margin-top:4px;"><code>[@asdg441]</code></div>
       <div style="font-size:12px; line-height:1.2;"><a href="https://github.com/asdg441">[GitHub 주소]</a></div>
     </td>
     <td align="center" width="150" style="padding:6px 8px;">
-      <a href="https://github.com/dahyun11" style="text-decoration:none; color:inherit;">
+      <a href="https://github.com/dahyun11" style="text-decoration:none;">
         <img src="https://github.com/dahyun11.png" width="80" style="border-radius:50%;" alt="하다현 아바타"/><br/>
-        <div style="font-size:18px; font-weight:700; line-height:1.25; margin-top:6px;">하다현</div>
       </a>
+      <div style="font-size:18px; font-weight:800; line-height:1.25; margin-top:6px;">하다현</div>
       <div style="font-size:13px; margin-top:4px;"><code>[@dahyun11]</code></div>
       <div style="font-size:12px; line-height:1.2;"><a href="https://github.com/dahyun11">[GitHub 주소]</a></div>
     </td>
     <td align="center" width="150" style="padding:6px 8px;">
-      <a href="https://github.com/jeong-mincheol" style="text-decoration:none; color:inherit;">
+      <a href="https://github.com/jeong-mincheol" style="text-decoration:none;">
         <img src="https://github.com/jeong-mincheol.png" width="80" style="border-radius:50%;" alt="정민철 아바타"/><br/>
-        <div style="font-size:18px; font-weight:700; line-height:1.25; margin-top:6px;">정민철</div>
       </a>
+      <div style="font-size:18px; font-weight:800; line-height:1.25; margin-top:6px;">정민철</div>
       <div style="font-size:13px; margin-top:4px;"><code>[@jeong-mincheol]</code></div>
       <div style="font-size:12px; line-height:1.2;"><a href="https://github.com/jeong-mincheol">[GitHub 주소]</a></div>
     </td>
     <td align="center" width="150" style="padding:6px 8px;">
-      <a href="https://github.com/AQUAQUA5" style="text-decoration:none; color:inherit;">
+      <a href="https://github.com/AQUAQUA5" style="text-decoration:none;">
         <img src="https://github.com/AQUAQUA5.png" width="80" style="border-radius:50%;" alt="오원장 아바타"/><br/>
-        <div style="font-size:18px; font-weight:700; line-height:1.25; margin-top:6px;">오원장</div>
       </a>
+      <div style="font-size:18px; font-weight:800; line-height:1.25; margin-top:6px;">오원장</div>
       <div style="font-size:13px; margin-top:4px;"><code>[@AQUAQUA5]</code></div>
       <div style="font-size:12px; line-height:1.2;"><a href="https://github.com/AQUAQUA5">[GitHub 주소]</a></div>
     </td>
@@ -62,8 +62,15 @@
 
 
 
+
 # 2. 프로젝트 기간
-	2025년 8월 22일(금) ~ 2025년 8월 25일(월) 
+<div align="center">
+  <div style="display:inline-block;padding:18px 24px;border-radius:16px;border:1px solid #e5e7eb;background:linear-gradient(135deg,#f8fafc,#eef2f7);">
+    <div style="font-size:clamp(24px, 5vw, 36px); font-weight:800; line-height:1.25; letter-spacing:-0.01em;">
+      2025년 8월 22일(금) ~ 8월 25일(월)
+    </div>
+  </div>
+</div>
 
 # 3. 프로젝트 개요
 
