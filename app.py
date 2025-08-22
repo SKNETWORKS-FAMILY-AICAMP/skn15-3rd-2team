@@ -4,11 +4,23 @@ from langgraph.graph.message import add_messages
 from transformers import pipeline
 from typing import cast
 from state_types import AgentState
+from openai import OpenAI
+import json
 
-from utils.cover_letter import cover_letter_feedback
+from utils.cover_letter import run_resume_interactive
 from utils.job_search import search_jobs
 
-classifier = pipeline("zero-shot-classification", model="joeddav/xlm-roberta-large-xnli")
+client = OpenAI()
+
+# 둘중에 골라서 쓰면 될듯 합니다.
+#classifier = pipeline("zero-shot-classification", model="joeddav/xlm-roberta-large-xnli")
+
+classifier = pipeline(
+    "zero-shot-classification",
+    model="joeddav/xlm-roberta-large-xnli",
+    tokenizer="joeddav/xlm-roberta-large-xnli",
+    use_fast=False 
+)
 
 async def handle_input_with_state(state: AgentState) -> str:
     user_input = state["ctx"]["tmp_prompt"]
@@ -18,22 +30,22 @@ async def handle_input_with_state(state: AgentState) -> str:
     # 최근 대화 일부를 문맥으로 활용
     recent_context = "\n".join(state["ctx"].get("con_past", [])[-3:])  # 최근 3개만
 
-    if (intent == "자기소개서 작성") or (intent == "자기소개서 첨삭"):
+    if intent == "자기소개서":
         prompt_with_context = f"이전 내용:\n{recent_context}\n\n현재 질문:\n{user_input}"
-        return await cover_letter_feedback(prompt_with_context)
-    elif intent == "모집공고 탐색":
+
+        company, job, spec = extract_info_from_text(prompt_with_context)
+
+        if not company or not job or not spec: # 자소서 필요내용 충족여부 확인 
+            return "회사명, 직무, 자기소개서 내용 중 일부가 부족합니다. 다시 작성해 주세요."
+
+        return await run_resume_interactive(company, job, spec)
+    elif intent == "모집공고":
         return search_jobs(user_input)
     else:
         return "자기소개서 OR 모집공고 관련 내용을 입력해주시면 도움을 드릴 수 있습니다."
 
 def classify_user_input(text: str) -> str:
-    # candidate_labels = ["자소서", "모집공고", "기타"]
-    candidate_labels = [
-        "자기소개서 작성",
-        "자기소개서 첨삭",
-        "모집공고 탐색",
-        "기타"
-    ]
+    candidate_labels = ["자기소개서", "모집공고", "기타"]
     
     # result = classifier(text, candidate_labels)
     result = classifier(
@@ -63,7 +75,7 @@ def classify_user_input(text: str) -> str:
 # async def handle_input(user_input: str) -> str:
 #     route = route_user_input(user_input)
 #     if route == "resume_handler":
-#         return await cover_letter_feedback(user_input)
+#         return await run_resume_interactive(user_input)
 #     elif route == "job_posting_handler":
 #         return search_jobs(user_input)
 #     else:
@@ -135,3 +147,38 @@ async def main(message: cl.Message):
     # await cl.Message(content=f"[의도: {intent}] {response_output}").send()
     msg.content = f"[의도: {intent}] {response_output}"
     await msg.update()
+
+def extract_info_from_text(user_input: str) -> tuple[str, str, str]:
+    prompt = f"""
+        다음 사용자 입력에서 회사명(company), 직무(job), 그리고 자기소개서 내용(spec)을 추출해줘. 
+        명확하지 않은 경우는 "" (빈 문자열)로 반환하고, 아래 JSON 형식으로 출력해줘:
+
+        입력:
+        \"\"\"
+        {user_input}
+        \"\"\"
+
+        결과 형식:
+        {{
+        "company": "",
+        "job": "",
+        "spec": ""
+        }}
+    """
+
+    response = client.chat.completions.create(
+        model="gpt-5-2025-08-07",
+        messages=[{"role": "user", "content": prompt}],
+        #temperature=0.2,
+    )
+
+    content = response.choices[0].message.content
+    try:
+        extracted = json.loads(content)
+        company = extracted.get("company", "").strip()
+        job = extracted.get("job", "").strip()
+        spec = extracted.get("spec", "").strip()
+        return company, job, spec
+    except json.JSONDecodeError:
+        # 실패할 경우 fallback
+        return "", "", user_input.strip()
