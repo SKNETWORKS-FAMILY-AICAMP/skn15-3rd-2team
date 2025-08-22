@@ -178,7 +178,7 @@ def run_resume_interactive(
     company_culture = None
     if not filtered_ideal.empty:
         keyword = filtered_ideal.iloc[0]['인재상_키워드']
-        summary = filtered_ideal.iloc['요약']
+        summary = filtered_ideal.iloc[0]['요약']
         company_culture = f"인재상 키워드: {keyword}\n요약: {summary}"
     else:
         api_result = company_ideal_talent_api(model, company_name, lang=language)
