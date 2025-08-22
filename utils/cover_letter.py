@@ -68,7 +68,7 @@ model = ChatOpenAI(model="gpt-5-2025-08-07")
 # 다국어
 base_generate_prompt_ko = SystemMessage(
     "당신은 자기소개서를 작성하는 어시스턴트입니다. "
-    "입력된 지원 직무와 본인 스펙, 경력, 경험 등을 토대로 최고의 자기소개서를 작성하세요."
+    "입력된 지원 직무와 본인 스펙, 경력, 경험 등을 토대로 최고의 자기소개서를 상세하게 작성하세요."
 )
 
 base_generate_prompt_en = SystemMessage(
