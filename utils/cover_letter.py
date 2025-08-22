@@ -1,17 +1,15 @@
 import pandas as pd
 import json
-from typing import Annotated, TypedDict
+from typing import Annotated, TypedDict, Optional
 from sqlalchemy import create_engine, text
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 from langchain_openai import ChatOpenAI
-from langgraph.graph import START, END, StateGraph
+from langgraph.graph import START, StateGraph
 from langgraph.graph.message import add_messages
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
-
-
 
 def company_ideal_talent_api(model: ChatOpenAI, company_name: str, lang: str = 'ko') -> dict:
     if lang == 'ko':
@@ -65,7 +63,7 @@ class State(TypedDict):
 
 model = ChatOpenAI(model="gpt-5-2025-08-07")
 
-# 다국어
+# 다국어 기본 프롬프트
 base_generate_prompt_ko = SystemMessage(
     "당신은 자기소개서를 작성하는 어시스턴트입니다. "
     "입력된 지원 직무와 본인 스펙, 경력, 경험 등을 토대로 최고의 자기소개서를 상세하게 작성하세요."
@@ -111,9 +109,7 @@ def generate(state: State, generate_prompt: SystemMessage) -> State:
     return {"messages": [answer]}
 
 
-# 수정 요청을 반영한 프롬프트로 첨삭 및 수정
 def reflect(state: State, reflection_prompt: SystemMessage) -> State:
-    # 현재 가장 최신 자기소개서 본문 찾기
     latest_letter = None
     for msg in reversed(state["messages"]):
         if isinstance(msg, AIMessage):
@@ -138,17 +134,26 @@ def reflect(state: State, reflection_prompt: SystemMessage) -> State:
         "위 자기소개서를 토대로 요청한 부분을 반영하여 새롭게 수정된 자기소개서를 작성하세요."
     )
 
-
     feedback_prompt = SystemMessage(feedback_prompt_text)
-
     answer = model.invoke([feedback_prompt])
     return {"messages": [AIMessage(content=answer.content)]}
 
 
-def run_interactive_resume():
-    db_connection_url = os.getenv('DB_CONNECTION_URL')  
-    if not db_connection_url:
-        raise ValueError("DB_CONNECTION_URL 환경 변수가 설정되어 있지 않습니다.")
+def run_resume_interactive(
+    company_name: str,
+    job: str,
+    spec: str,
+    char_limit: int = 0,
+    language: str = 'ko',
+    use_example_resume: bool = False,
+    db_connection_url: Optional[str] = None
+) -> str:
+
+    if db_connection_url is None:
+        db_connection_url = os.getenv('DB_CONNECTION_URL')
+        if not db_connection_url:
+            raise ValueError("DB_CONNECTION_URL 환경 변수가 설정되어 있지 않습니다.")
+
     engine = create_engine(db_connection_url)
 
     try:
@@ -163,105 +168,77 @@ def run_interactive_resume():
         print(f"자소서 예시 DB 로드 오류: {e}")
         df_resume = pd.DataFrame()
 
-    user_company = input("지원 회사명을 입력하세요 (예: 삼성전자): ").strip()
-    user_job = input("지원 직무를 입력하세요 (예: 일반사무직): ").strip()
-    user_spec = input("본인의 대외 스펙/경험을 입력하세요 (예: 토익900, 컴활1급 등): ").strip()
-    user_char_limit = 0
-    try:
-        user_char_limit = int(input("자기소개서 글자 수 제한을 입력하세요 (예: 500, 제한 없으면 0): ").strip())
-    except ValueError:
-        print("잘못된 입력입니다. 글자 수 제한을 적용하지 않습니다.")
-
-    user_language = input("지원 회사의 인재상 언어를 입력하세요 (ko=한국어, en=영어 등): ").strip().lower()
-    if user_language not in ['ko', 'en']:
-        user_language = 'ko'
-
-    base_generate_prompt, reflection_prompt = get_prompts(user_language)
+    base_generate_prompt, reflection_prompt = get_prompts(language)
 
     filtered_ideal = df_ideal[
-        (df_ideal['회사'].astype(str).str.contains(user_company, case=False, na=False)) &
-        (df_ideal['language'] == user_language)
+        (df_ideal['회사'].astype(str).str.contains(company_name, case=False, na=False)) &
+        (df_ideal['language'] == language)
     ]
 
     company_culture = None
     if not filtered_ideal.empty:
         keyword = filtered_ideal.iloc[0]['인재상_키워드']
-        summary = filtered_ideal.iloc[0]['요약']
+        summary = filtered_ideal.iloc['요약']
         company_culture = f"인재상 키워드: {keyword}\n요약: {summary}"
-        print(f"\n내부 DB에서 '{user_company}' ({user_language}) 인재상 정보를 찾았습니다.\n")
     else:
-        print(f"\n내부 DB에 '{user_company}' ({user_language}) 인재상 정보가 없어 API 조회를 시도합니다...")
-        api_result = company_ideal_talent_api(model, user_company, lang=user_language)
-        if user_language == 'ko':
-            company_name = api_result.get("회사명", user_company)
+        api_result = company_ideal_talent_api(model, company_name, lang=language)
+        if language == 'ko':
+            company_name_api = api_result.get("회사명", company_name)
             keywords = api_result.get("인재상_키워드", [])
             summary = api_result.get("요약", "")
         else:
-            company_name = api_result.get("CompanyName", user_company)
+            company_name_api = api_result.get("CompanyName", company_name)
             keywords = api_result.get("KeyQualities", [])
             summary = api_result.get("Summary", "")
 
         company_culture = f"인재상 키워드: {', '.join(keywords)}\n요약: {summary}"
         try:
-            upsert_ideal_to_db(engine, company_name, keywords, summary, language=user_language)
-            print(f"API로 조회한 인재상 정보를 DB에 저장했습니다.\n")
+            upsert_ideal_to_db(engine, company_name_api, keywords, summary, language=language)
         except Exception as e:
             print(f"인재상 정보 DB 저장 중 오류 발생: {e}")
 
     filtered_resume = df_resume[
-        (df_resume['company'].str.strip() == user_company) &
-        (df_resume['position'].str.contains(user_job, case=False, na=False))
+        (df_resume['company'].str.strip().str.lower() == company_name.strip().lower()) &
+        (df_resume['position'].str.contains(job, case=False, na=False))
     ]
     example_resume = None
-    if not filtered_resume.empty:
-        print(f"내부 DB에 '{user_company} - {user_job}' 자소서 예시가 있습니다.")
-        if input("내부 DB 자소서 예시를 참고할까요? (y/n): ").strip().lower() == 'y':
-            example_resume = filtered_resume.iloc[0]['a']
-    else:
-        print(f"'{user_company} - {user_job}'에 대한 자소서 예시가 없습니다.")
+    if not filtered_resume.empty and use_example_resume:
+        example_resume = filtered_resume.iloc[0]['a']
 
     generate_prompt = make_job_prompt(
         base_generate_prompt,
         company_culture=company_culture,
         example_resume=example_resume,
-        char_limit=user_char_limit
+        char_limit=char_limit
     )
 
     state = {
         "messages": [
             HumanMessage(
-                content=f"지원 회사: {user_company}\n지원 직무: {user_job}\n스펙 및 경험: {user_spec}"
+                content=f"지원 회사: {company_name}\n지원 직무: {job}\n스펙 및 경험: {spec}"
             )
         ]
     }
 
-    def generate_node(state: State) -> State:
-        return generate(state, generate_prompt)
-
-    def reflect_node(state: State) -> State:
-        return reflect(state, reflection_prompt)
-
     builder = StateGraph(State)
-    builder.add_node("generate", generate_node)
-    builder.add_node("reflect", reflect_node)
+    builder.add_node("generate", lambda s: generate(s, generate_prompt))
+    builder.add_node("reflect", lambda s: reflect(s, reflection_prompt))
     builder.add_edge(START, "generate")
     builder.add_edge("reflect", "generate")
     graph = builder.compile()
 
     final_resume = None
+    reflection_content = None
 
     while True:
         outputs = graph.stream(state)
-        reflection_content = None
-
         for output in outputs:
             node, val = list(output.items())[0]
             content = val["messages"][-1].content
 
-            if user_char_limit > 0 and len(content) > user_char_limit:
-                print(f"\n⚠️ 생성된 자기소개서가 {user_char_limit}자를 초과했습니다.\n")
+            if char_limit > 0 and len(content) > char_limit:
+                print(f"\n⚠️ 생성된 자기소개서가 {char_limit}자를 초과했습니다.\n")
 
-            print(f"\n=== {node.upper()} 단계 ===\n{content}\n")
             state["messages"].append(val["messages"][-1])
 
             if node == "generate":
@@ -269,20 +246,35 @@ def run_interactive_resume():
             elif node == "reflect":
                 reflection_content = content
 
-        if reflection_content:
-            print(f"===== 첨삭 피드백 =====\n{reflection_content}\n")
+        # 첨삭 피드백을 외부에서 활용할 수 있게 반환값에 포함
+        if reflection_content is None:
+            # 반영 과정이 없으면 바로 최종 결과 반환
+            return final_resume, None
 
-        user_edit = input(
-            "수정하고 싶은 부분이나 요청사항을 입력하세요 (수정 완료 시 '완료' 입력): "
-        ).strip()
 
-        if user_edit.lower() == "완료":
-            print("\n✅ 최종 자기소개서:\n", final_resume)
-            break
-
-        # 사용자 수정 요청 메시지를 상태에 추가해 다음 수정에 반영
-        state["messages"].append(HumanMessage(content=user_edit))
+        return final_resume, reflection_content
 
 
 if __name__ == "__main__":
-    run_interactive_resume()
+    # 예시 호출 코드
+    company_name = "삼성전자"
+    job = "일반사무직"
+    spec = "토익900, 컴활1급"
+    char_limit = 500
+    language = "ko"
+    use_example_resume = True
+
+    resume, feedback = run_resume_interactive(
+        company_name,
+        job,
+        spec,
+        char_limit,
+        language,
+        use_example_resume
+    )
+
+    print("=== 생성된 자기소개서 ===")
+    print(resume)
+    if feedback:
+        print("\n=== 첨삭 피드백 ===")
+        print(feedback)
