@@ -1,0 +1,12 @@
+httpx>=0.24
+python-dotenv
+playwright
+pydantic>=2
+numpy
+faiss-cpu
+pillow
+pytesseract
+sentence-transformers
+torch>=2.1
+selectolax
+rapidfuzz
