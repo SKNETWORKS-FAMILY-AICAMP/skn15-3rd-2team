@@ -39,7 +39,60 @@
       <a href="https://github.com/jeong-mincheol" style="text-decoration:none;">
         <img src="https://github.com/jeong-mincheol.png" width="80" style="border-radius:50%;" alt="정민철 아바타"/><br/>
       </a>
-      <div style="font-size:18px; font-weight:800;템**입니다.
+      <div style="font-size:18px; font-weight:800; line-height:1.25; margin-top:6px;">정민철</div>
+      <div style="font-size:13px; margin-top:4px;"><code>[@jeong-mincheol]</code></div>
+      <div style="font-size:12px; line-height:1.2;"><a href="https://github.com/jeong-mincheol">[GitHub 주소]</a></div>
+    </td>
+    <td align="center" width="150" style="padding:6px 8px;">
+      <a href="https://github.com/AQUAQUA5" style="text-decoration:none;">
+        <img src="https://github.com/AQUAQUA5.png" width="80" style="border-radius:50%;" alt="오원장 아바타"/><br/>
+      </a>
+      <div style="font-size:18px; font-weight:800; line-height:1.25; margin-top:6px;">오원장</div>
+      <div style="font-size:13px; margin-top:4px;"><code>[@AQUAQUA5]</code></div>
+      <div style="font-size:12px; line-height:1.2;"><a href="https://github.com/AQUAQUA5">[GitHub 주소]</a></div>
+    </td>
+  </tr>
+</table>
+
+
+
+
+
+
+
+
+
+
+# 2. 프로젝트 기간
+<div align="center">
+  <div style="display:inline-block;padding:18px 24px;border-radius:16px;border:1px solid #e5e7eb;background:linear-gradient(135deg,#f8fafc,#eef2f7);">
+    <div style="font-size:clamp(24px, 5vw, 36px); font-weight:800; line-height:1.25; letter-spacing:-0.01em;">
+      2025년 8월 22일(금) ~ 8월 25일(월)
+    </div>
+  </div>
+</div>
+
+# 3. 프로젝트 개요
+
+## 📕 프로젝트명
+ 
+  # JobPal - 당신의 AI 취업 도우미
+
+
+## ✅ 프로젝트 배경 및 목적
+
+취업 준비를 하면 수많은 공고가 있고 이런 공고들 중 **내게 필요한 것들을 찾는 데에는 많은 시간**을 필요로 합니다. 이 챗봇은 **사용자의 희망 조건(직무·지역·급여·근무형태 등)** 과 **내 능력(자격증, 사용 기술, 프로젝트 경험 등)** 을 입력받고, **입력받은 데이터를 토대로 거기에 부합하는 공고만** 추려서 보내줍니다.  
+
+또한 **합격자들의 자기소개서, 기업이 원하는 인재상** 등을 토대로 기존에 작성한 자기소개서가 있다면 **지원하는 기업에 맞게 첨삭**해 주고, 자기소개서가 없다면 **사용자의 정보를 입력받아 생성**해 주는 기능이 존재합니다.  
+
+내가 원하는 조건과 내 역량을 기반으로 **최대한 조건에 맞는 공고를 매칭**받고, **회사/직무별 포인트가 반영된 자기소개서 자동 생성·첨삭**으로 **시간을 절약**하고 **원활한 취직**에 도움을 주는 시스템입니다.
+
+---
+
+## 🖐️ 프로젝트 소개
+
+**JobPal**은 위에서 정리한 문제를 해결하기 위해, 사용자의 조건과 역량을 한 번에 받아  
+**맞춤 공고 추천 → 자소서 생성/첨삭**까지 **한 흐름**으로 지원 과정을 묶어주는 **시스템**입니다.
 
 ### 🔗 공고
 - 사용자가 원하는 **조건(직무·지역·급여·근무형태)** 과 사용자의 **역량(자격증·기술·프로젝트)** 을 입력하면 모델이 입력한 키워드를 기반으로 **맞춤 공고**를 잡코리아(https://www.jobkorea.co.kr/) 에서 가져와 제공합니다.
@@ -64,5 +117,3 @@
 # 4. 기술 스택
 <img src="https://img.shields.io/badge/python-%233776AB.svg?&style=for-the-badge&logo=python&logoColor=white" /><img src="https://img.shields.io/badge/postgresql-%23336791.svg?&style=for-the-badge&logo=postgresql&logoColor=white" /><img src="https://img.shields.io/badge/openai-%23412991.svg?&style=for-the-badge&logo=openai&logoColor=white" />
 <img src="https://img.shields.io/badge/pandas-%23150458.svg?&style=for-the-badge&logo=pandas&logoColor=white" />
-
-
