@@ -113,19 +113,9 @@
 
 
 
-## 👤 대상 사용자
-
-
 
 # 4. 기술 스택
 <img src="https://img.shields.io/badge/python-%233776AB.svg?&style=for-the-badge&logo=python&logoColor=white" /><img src="https://img.shields.io/badge/postgresql-%23336791.svg?&style=for-the-badge&logo=postgresql&logoColor=white" /><img src="https://img.shields.io/badge/openai-%23412991.svg?&style=for-the-badge&logo=openai&logoColor=white" />
 <img src="https://img.shields.io/badge/pandas-%23150458.svg?&style=for-the-badge&logo=pandas&logoColor=white" />
 
-
-
-# 5. 수행결과
-
-
-
-# 6. 한 줄 회고
 
