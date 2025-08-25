@@ -89,9 +89,7 @@
 - 키워드 확장 → Playwright 크롤링
 - 역할별 공고 리스트를 Streamlit UI에 출력
 
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/e7684509-47f6-40c0-80b5-6784a5559bd3" alt="공고 시스템 아키텍처" width="1000">
-</p>
+<img width="2187" height="903" alt="Image" src="https://github.com/user-attachments/assets/4c782f7d-fc6d-4a71-9fd3-79137ec2daf7" />
 
 ### ✍️ 자기소개서 생성 시스템
 
