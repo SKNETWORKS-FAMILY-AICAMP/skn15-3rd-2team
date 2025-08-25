@@ -117,9 +117,19 @@
 
 ## ⚙️ 6. 기술 스택
 
-<p>
-  <img src="https://img.shields.io/badge/python-%233776AB.svg?&style=for-the-badge&logo=python&logoColor=white"/>
-  <img src="https://img.shields.io/badge/postgresql-%23336791.svg?&style=for-the-badge&logo=postgresql&logoColor=white"/>
-  <img src="https://img.shields.io/badge/openai-%23412991.svg?&style=for-the-badge&logo=openai&logoColor=white"/>
-  <img src="https://img.shields.io/badge/pandas-%23150458.svg?&style=for-the-badge&logo=pandas&logoColor=white"/>
-</p>
+### 🖥️ Frontend  
+![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)
+
+### 🧠 Backend / LLM  
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)  
+![LangChain](https://img.shields.io/badge/LangChain-4B8BBE?style=for-the-badge)  
+![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white)  
+![Pydantic](https://img.shields.io/badge/Pydantic-008000?style=for-the-badge)
+
+### 📊 Embedding / Ranking  
+![sentence-transformers](https://img.shields.io/badge/sentence--transformers-00599C?style=for-the-badge)  
+![scikit-learn](https://img.shields.io/badge/Scikit--learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)
+
+### 🕸️ Crawling / Async  
+![Playwright](https://img.shields.io/badge/Playwright-2EAD33?style=for-the-badge&logo=playwright&logoColor=white)  
+![asyncio](https://img.shields.io/badge/asyncio-005571?style=for-the-badge)
