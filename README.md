@@ -99,7 +99,7 @@
 - Streamlit UI에 최종 결과 출력
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/251a6e96-69c1-49d2-9477-4962488901a8" alt="자기소개서 시스템 아키텍처" width="1000">
+  <img width="3366" height="678" alt="jasoseo" src="https://github.com/user-attachments/assets/0d986c8c-32b7-4e3b-b9bf-254019f9f73e" />
 </p>
 
 ---
